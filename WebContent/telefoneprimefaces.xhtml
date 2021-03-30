@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+
+
+<h:body>
+<!-- Criar cabeçalho de jsf e pramefaces na aula 17 -->
+	<h1>Fone primefaces</h1>
+	 <h:form id="formulario">
+		<p:growl showDetail="true" showSummary="false" id="msg"/>
+		
+		<h:panelGrid columns="2">
+			<p:outputLabel>Usuário:</p:outputLabel>
+			<h:outputText value="#{telefoneManagedBean.user.nome}"/>
+			
+			<p:outputLabel>Número:</p:outputLabel>
+			<p:inputMask value="#{telefoneManagedBean.telefone.numero}"
+			mask="(99) 9 9999-9999" required="true" requiredMessage="Número Obrigatório"/>
+			
+			<p:outputLabel>Tipo:</p:outputLabel>
+			<p:selectOneMenu value="#{telefoneManagedBean.telefone.tipo}" style="width:290"
+			required="true" requiredMessage="Tipo Obrigatório">
+			<f:selectItem itemValue="RECADO" itemLabel="Recado"/>
+			<f:selectItem itemValue="TRABALHO" itemLabel="Trabalho"/>
+			<f:selectItem itemValue="CASA" itemLabel="Casa"/>
+			</p:selectOneMenu>
+			
+		</h:panelGrid>
+		<br/>
+		<br/>
+		<p:commandButton value="Salvar"  action="#{telefoneManagedBean.salvar}" ajax="false"></p:commandButton>
+		
+	</h:form>
+	
+	<h:form id="formTelefones">
+		<p:dataTable value="#{telefoneManagedBean.user.telefoneUsers}" var="fone" cellpadding="10" border="2">
+			
+			
+			<p:column width="20">
+			<center>
+				<f:facet name="header" >Id</f:facet>
+				<h:outputText value="#{fone.id}"/>
+				</center>
+			</p:column>
+			
+			<p:column width="50">
+			<center>
+			<f:facet name="header">Número</f:facet>
+				<h:outputText value="#{fone.numero}"/>
+				</center>
+			</p:column>
+			
+			<p:column width="30">
+			<center>
+			<f:facet name="header">Tipo</f:facet>
+				<h:outputText value="#{fone.tipo}"/>
+				</center>
+			</p:column>
+			
+			<p:column width="50">
+			 <center>
+				<f:facet name="header">Delete</f:facet>
+				<h:commandLink immediate="true" action="#{telefoneManagedBean.removeTelefone}" id="botaoremover">
+					<h:graphicImage url="resources/img/lixo.png" width="30" height="30"/>
+					<f:setPropertyActionListener value="#{fone}" target="#{telefoneManagedBean.telefone}"/>
+					<f:ajax execute="botaoremover" render="@form :formulario:msg"/>
+				</h:commandLink>
+			</center>
+			</p:column>
+			
+		</p:dataTable>
+	</h:form>
+
+</h:body>
+
+</html>
